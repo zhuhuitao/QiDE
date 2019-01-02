@@ -1,0 +1,99 @@
+apply plugin: 'com.android.application'
+//apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
+
+    signingConfigs {
+        debug {
+            storeFile file("qide.jks")
+            storePassword "123456"
+            keyAlias "qide"
+            keyPassword "123456"
+        }
+        release {
+            storeFile file("qide.jks")
+            storePassword "123456"
+            keyAlias "qide"
+            keyPassword "123456"
+        }
+    }
+    defaultConfig {
+        multiDexEnabled true
+        applicationId rootProject.ext.android["applicationId"]
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+            buildConfigField("boolean", "IS_DEBUG", "true")
+            buildConfigField("String", "URL", "\" http://api.newstarthealth.cn\"")
+            buildConfigField("String", "AK", "\"RNVNc5YvQSnzfcGXmjXssVB0\"")
+            buildConfigField("String", "SK", "\"KG7ymtQW4ISh55FqVlf5YcY0buC3BPgn\"")
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            lintOptions {
+                checkReleaseBuilds false
+                abortOnError false
+            }
+            buildConfigField("boolean", "IS_DEBUG", "false")
+            buildConfigField("String", "URL", "\"http://api.newstarthealth.cn\"")
+            buildConfigField("String", "AK", "\"RNVNc5YvQSnzfcGXmjXssVB0\"")
+            buildConfigField("String", "SK", "\"KG7ymtQW4ISh55FqVlf5YcY0buC3BPgn\"")
+        }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+    }
+
+    sourceSets {
+        /*  main {
+              jniLibs.srcDirs = ['libs']
+          }*/
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    testImplementation rootProject.ext.dependencies["junit"]
+    implementation 'com.android.support:multidex:1.0.1'
+    //第三方依赖库
+    implementation rootProject.ext.dependencies["appcompat-v7"]
+    implementation rootProject.ext.dependencies["support-design"]
+    implementation rootProject.ext.dependencies["support-v4"]
+    implementation rootProject.ext.dependencies["recyclerview-v7"]
+    implementation rootProject.ext.dependencies["gson"]
+    implementation rootProject.ext.dependencies["glide"]
+    implementation rootProject.ext.dependencies["butterknife-a"]
+    implementation rootProject.ext.dependencies["butterknife-c"]
+    implementation rootProject.ext.dependencies["okhttp"]
+    implementation rootProject.ext.dependencies["EasyRefreshLayout"]
+    implementation rootProject.ext.dependencies["banner"]
+    implementation rootProject.ext.dependencies["wxPay"]
+    implementation rootProject.ext.dependencies["pickView"]
+    implementation rootProject.ext.dependencies["eventBus"]
+    implementation rootProject.ext.dependencies["glide"]
+    implementation 'com.android.support:design:28.0.0'
+}
+
+//md5 签名：56:B4:9D:7B:61:19:7C:81:D9:74:71:AD:0A:6A:65:53 （控制台）
+//md5 签名：56b49d7b61197c81d97471ad0a6a6553 （工具）
